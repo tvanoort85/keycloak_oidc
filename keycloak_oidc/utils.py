@@ -11,8 +11,8 @@ def generate_username(email):
 
 
 def oidc_op_logout(request):
-    session = request.session
+    token_id =  request.session.get('oidc_id_token', '')
 
     oidc_op_logout_endpoint = settings.OIDC_OP_LOGOUT_ENDPOINT
     redirect_url = request.build_absolute_uri(getattr(settings, 'LOGOUT_REDIRECT_URL', '/'))
-    return '{}?post_logout_redirect_uri={}&id_token_hint={}'.format(oidc_op_logout_endpoint, redirect_url, session["oidc_id_token"])
+    return '{}?post_logout_redirect_uri={}&id_token_hint={}'.format(oidc_op_logout_endpoint, redirect_url, token_id)
