@@ -15,4 +15,5 @@ def oidc_op_logout(request):
 
     oidc_op_logout_endpoint = settings.OIDC_OP_LOGOUT_ENDPOINT
     redirect_url = request.build_absolute_uri(getattr(settings, 'LOGOUT_REDIRECT_URL', '/'))
-    return '{}?post_logout_redirect_uri={}&id_token_hint={}'.format(oidc_op_logout_endpoint, redirect_url, token_id)
+    #return '{}?post_logout_redirect_uri={}&id_token_hint={}'.format(oidc_op_logout_endpoint, redirect_url, token_id)
+    return '{}'.format(oidc_op_logout_endpoint)
