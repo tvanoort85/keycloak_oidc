@@ -2,10 +2,10 @@
 
 # Keycloak OIDC
 
-Keycloak OIDC is a simple Django app that wraps the mozilla_django_oidc 
-app and implements Keycloak authentication the way we use it at Datapunt. 
+Keycloak OIDC is a simple Django app that wraps the mozilla_django_oidc
+app and implements Keycloak authentication the way we use it at Datapunt.
 
-It creates and updates users and sets their email, username and first- 
+It creates and updates users and sets their email, username and first-
 and lastname based on the info provided by keycloak, and manages
 group membership based on keycloak roles.
 
@@ -16,7 +16,7 @@ group membership based on keycloak roles.
     ```bash
     pip install datapunt_keycloak_oidc
     ```
-   
+
 2. Add "keycloak-oidc" to your INSTALLED_APPS (make sure to load after auth!):
 
     ```python
@@ -27,7 +27,7 @@ group membership based on keycloak roles.
     ]
     ```
 
-3. Add the mozilla_django_oidc.SessionRefreshMiddleware to your MIDDLEWARE 
+3. Add the mozilla_django_oidc.SessionRefreshMiddleware to your MIDDLEWARE
    (middleware involving session and authentication must come first!):
 
     ```python
@@ -49,7 +49,7 @@ group membership based on keycloak roles.
     ```
 
 5. In settings.py import the default OIDC settings. These
-   defaults will work in most situations. 
+   defaults will work in most situations.
 
     ```python
     # Import from keycloak_oidc settings and use the defaults
@@ -57,7 +57,7 @@ group membership based on keycloak roles.
     ```
 
 
-6. Set the OIDC_RP_CLIENT_ID and OIDC_RP_CLIENT_SECRET in settings.py. 
+6. Set the OIDC_RP_CLIENT_ID and OIDC_RP_CLIENT_SECRET in settings.py.
    Note that these should be kept secret. Therefore these should preferable
    be set in the OS ENV. Obtain these from the keycloak provider.
 
@@ -65,12 +65,12 @@ group membership based on keycloak roles.
     OIDC_RP_CLIENT_ID = os.environ['OIDC_RP_CLIENT_ID']
     OIDC_RP_CLIENT_SECRET = os.environ['OIDC_RP_CLIENT_SECRET']
     ```
-   
+
    Keycloak only talks to urls that are whitelisted. Therefore, make
    sure that the app url for production is added to keycloak. To make
    local development possible, also make sure localhost:8080 (or any other port)
-   is added. 
-   
+   is added.
+
 7. Add the OIDC provider URLs to settings.py, and set the proper OS env. This default
    will fall back to the acceptance keycloak urls.
 
@@ -86,7 +86,7 @@ group membership based on keycloak roles.
     OIDC_OP_LOGOUT_ENDPOINT = os.getenv('OIDC_OP_LOGOUT_ENDPOINT',
         'https://iam.amsterdam.nl/auth/realms/datapunt-acc/protocol/openid-connect/logout')
     ```
-   
+
 8. When using Django-rest-framework, add the mozilla_django_oidc
    OIDCAuthentication to the default authentication classes (and
    make sure the DRF SessionAuthentication has been added):
@@ -107,7 +107,7 @@ group membership based on keycloak roles.
 
     ```python
     from keycloak_oidc.drf.permissions import InAuthGroup
-    
+
     class InTestAuthGroup(InAuthGroup):
         """
         A permission to allow access if and only if a user is logged in,
@@ -115,14 +115,14 @@ group membership based on keycloak roles.
         """
         allowed_group_names = ['test']
     ```
-   
+
 10. Include the keycloak-oidc URLconf in your project urls.py:
 
     ```python
-    url(r'^oidc/', include('keycloak_oidc.urls')),
+    re_path(r'^oidc/', include('keycloak_oidc.urls')),
     ```
 
 11. IMPORTANT: Make sure to read through the Mozilla Django OIDC docs:
    https://mozilla-django-oidc.readthedocs.io/en/stable/installation.html
-   
+
    All settings that can be configured are documented there.
